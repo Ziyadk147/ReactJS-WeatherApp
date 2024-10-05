@@ -1,4 +1,26 @@
+import {useState} from "react";
+
 export default function Navbar() {
+// make this functional
+    const [ city , setCity  ] = useState();
+
+    function handleInputChange(event){
+        setCity(event.target.value);
+    }
+    function handleSubmit(){
+        console.log(city);
+    }
+    function getCurrentLocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition( (position) => {
+                const location = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                }
+                console.log(location)
+            } )
+        }
+    }
     return (
         <nav
             className="navbar navbar-expand-lg navbar-dark bg-dark flex flex-col lg:flex-row items-center justify-center w-full py-4 fixed top-0 z-50">
@@ -7,11 +29,13 @@ export default function Navbar() {
                     type="text"
                     className="rounded-3xl bg-lighter-dark shadow-lg shadow-gray-950 px-6 lg:px-8 sm:px-5 my-5 h-14 text-stone-100 font-bold text-center w-full pr-12  "
                     placeholder="Search for a place"
+                    onChange={handleInputChange}
                 />
                 <button
                     type="submit"
                     className="absolute right-4 top-7 bg-transparent text-stone-100 p-2 rounded-full hover:bg-gray-700 focus:outline-none"
                     aria-label="Search"
+                    onClick={handleSubmit}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" stroke="currentColor"
                          viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,6 +47,7 @@ export default function Navbar() {
             <div className="flex justify-center items-center lg:ml-2">
                 <button
                     className="rounded-3xl h-14 px-8 bg-button-green shadow-lg shadow-gray-950 text-stone-100 font-bold text-center"
+                    onClick={getCurrentLocation}
                 >
                     Current location
                 </button>
